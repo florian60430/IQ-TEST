@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+
+<body>
+    <div>Question : <span id="question"></span></div>
+    <div>
+        <form id="propose">
+            <input type='radio' id='reponse0' name='test' value='rouge'>
+        </form>
+    </div>
+    <button id="btn">Valider</button>
+
+    <div id="score"></div>
+
+</body>
+
+<script>
+
+    /* --------------------------------- 
+    RECUPERATION DES ELEMENTS DU DOM 
+    -----------------------------------*/
+    
+    //question
+    const question = document.getElementById("question");
+    
+    //formulaire
+    const propose = document.getElementById("propose");
+    
+    //bouton
+    const btnValider = document.getElementById("btn");
+
+    //score 
+    const score = document.getElementById("score");
+
+
+    /* -----------------------
+     INITIALISATION DE LA PAGE
+     ------------------------ */
+     
+
+     
+    //1ère question on load
+    document.addEventListener('DOMContentLoaded', function (e) {
+
+        question.innerHTML = tabQuestion[0].getQuestion();
+        propose.innerHTML = createForm(tabQuestion[0].getProposition());
+    });
+
+
+    /* ------------------------------
+    GESTION DES QUESTION ET REPONSE
+    -------------------------------*/
+    
+
+
+    // change la question et la reponse a chaque click du formulaire
+    btnValider.addEventListener('click', function (e) {
+
+        //annuler le comportement normal du formulaire
+        e.preventDefault();
+
+        
+        if (tabQuestion[i] != null) 
+        {
+            //changement de la question
+            question.innerHTML = tabQuestion[i].getQuestion();
+
+            if(tabQuestion[i].getProposition() != null)
+            {
+                propose.innerHTML = createForm(tabQuestion[i].getProposition());
+            }
+            //sinon un input texte
+            else 
+            {
+                propose.innerHTML = "<input type='text' name='test' id='reponse'>";
+            }
+
+            i++;
+            indiceReponseUser++;
+        }
+        else 
+        {
+            question.innerHTML = "";
+            propose.innerHTML = "score : "+ scoreUser;
+            btnValider.innerHTML = "";
+        }
+    });
+
+    //génération des bouton input réponse
+    const createForm = (proposeIt) => {
+
+        let i;
+        let form;
+        let chaineFinale = "";
+
+        for (i = 0; i < proposeIt.length; i++) 
+        {
+            form = "<input type='radio' id='reponse" + i + "' name='test' value='" + proposeIt[i] + "'> <label for='reponse" + i + "'>" + proposeIt[i] + "</label>";
+            chaineFinale = chaineFinale + form;
+        }
+    
+        return chaineFinale;
+
+    }
+
+
+
+    /* ------------------------------
+    ENREGISTREMENT DES REPONSES USER
+    ------------------------------- */
+
+
+    propose.addEventListener('input', function(e)
+    {
+        reponseUser[indiceReponseUser] = e.target.value;
+    });  
+
+
+
+    /* -----------------------
+    CALCULE DU SCORE DU USER
+    ------------------------- */
+
+
+</script>
+
+</html>
